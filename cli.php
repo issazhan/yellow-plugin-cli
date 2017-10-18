@@ -24,13 +24,13 @@ class YellowCli
 			$this->yellow->page->set("cliHelp", "Please Login!");
 			$this->yellow->page->set("cliResults", "");
 			
-			if($this->yellow->plugins->isExisting("commandline") &&
-			   $this->yellow->plugins->isExisting("webinterface") &&
-			   $this->yellow->plugins->get("webinterface")->response->isUser())
+			if($this->yellow->plugins->isExisting("command") &&
+				$this->yellow->plugins->get("edit")->response->isUserWebmaster())
 			{
-				$help = $this->yellow->plugins->get("commandline")->getCommandHelp();
+				$help = $this->yellow->plugins->get("command")->getCommandHelp();
 				$this->yellow->page->set("cliHelp", implode("\n", $help));
 
+				$location = $this->yellow->page->getLocation(true);
 				$query = trim($_REQUEST["query"]);
 				if(!empty($query))
 				{
@@ -47,7 +47,6 @@ class YellowCli
 					if($args[0]=="build")
 					{
 						ob_start();
-						$location = $this->yellow->page->getLocation(true);
 						echo "<html><h1>$args[1]:</h1><pre>\n$result</pre><a href=$location>Back</a></html>";
 						$this->yellow->page->setOutput(ob_get_contents());
 						ob_end_clean();
